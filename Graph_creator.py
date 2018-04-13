@@ -1,6 +1,7 @@
 import networkx as nx
 from Graph_matrix import adjacency_matrix
 from Atomic_creator import create_50
+from onehundred_creator import create_100
 
 
 
@@ -28,6 +29,27 @@ def create_50_input():
 
 	file.close()
 
+
+def create_100_input():
+	graph1 = nx.Graph()
+	nodelist = list(range(0,100))
+	graph1.add_weighted_edges_from(create_100(), nodelist=nodelist)
+	arr = adjacency_matrix(graph1).toarray()
+	file = open("100.in","w")
+	file.write("100\n")
+	file.write(string_of_nodes(100) + "\n")
+	file.write("0\n")
+	for row in arr:
+		r = ""
+		for element in row:
+			if element == 0:
+				element = "x"
+			r += str(element)
+			r += " "
+		r += "\n"
+		file.write(r)
+
+	file.close()
 
 def string_of_nodes(num_nodes):
 	s = ""

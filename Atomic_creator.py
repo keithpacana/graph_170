@@ -7,12 +7,15 @@ def type1_creator(source, start):
 	# One is conqured in the solution
 	zero1 = start
 	one1 = zero1 + 1
-	two1 = one1 + 1
-	three1 = one1 + 2
+	two1 = zero1 + 2
+	three1 = zero1 + 2
 	## four1 is conqured in solution
-	four1 = one1 + 3
-	five1 = one1 + 4
-	middle1 = one1 + 5
+	four1 = zero1 + 4
+	five1 = zero1 + 5
+	middle1 = zero1 + 6
+
+	print("one1: " + str(one1))
+	print("four1: " + str(four1))
 
 	# weights
 	lst.append((zero1, zero1, 750))
@@ -44,11 +47,13 @@ def type1_creator(source, start):
 	###### define nodes
 	zero2 = middle1 + 1
 	one2 = zero2 + 1
-	two2 = one2 + 1
-	three2 = one2 + 2
-	four2 = one2 + 3
-	five2 = one2 + 4
-	middle2 = one2 + 5
+	two2 = zero2 + 2
+	three2 = zero2 + 3
+	four2 = zero2 + 4
+	five2 = zero2 + 5
+	middle2 = zero2 + 6
+
+	print("middle2: " + str(middle2))
 
 	# weights
 	lst.append((zero2, zero2, 750))
@@ -86,6 +91,7 @@ def type1_creator(source, start):
 	mm6 = mm1 + 5
 	mm7 = mm1 + 6
 	mm8 = mm1 + 7
+
 
 	#Middle men conquering cost
 	lst.append((mm1, mm1, 750))
@@ -190,7 +196,7 @@ def main_bushy_2_micro(source, start):
 	useless2 = useless1 + 1
 	useless3 = useless1 + 2
 
-	# low weight to trick people into wanting to conquer
+	# low weight conquering cost to trick people into wanting to conquer
 	lst.append((useless1, useless1, 10))
 	lst.append((useless2, useless2, 10))
 	lst.append((useless3, useless3, 10))
@@ -211,8 +217,11 @@ def main_bushy_2_micro(source, start):
 	lst.append((useless1, four2 + 4 , 50))
 	lst.append((useless2, four2 + 4, 50))
 	lst.append((useless3, four2 + 4, 50))
+
+
 	lst.remove((source, start + 1, 50))
 	lst.append((source,start + 1,400))
+	lst.append((source, four2, 400))
 
 	return lst, useless3
 
@@ -326,12 +335,12 @@ def create_50():
 	lst = lst + lst1 + lst2
 
 	for i in range(1,23):
+		# not connecting these ones to make sure you wanna go back to source
+		if i == 2 or i == 5 or i == 14:
+			continue
 		for j in range(23, 50):
 			lst.append((i,j, 750))
 
-	for i in lst:
-		if i[0] == 1 or i[1] == 1:
-			print(i)
 
 	return lst
 
