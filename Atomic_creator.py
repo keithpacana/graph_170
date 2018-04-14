@@ -8,14 +8,14 @@ def type1_creator(source, start):
 	zero1 = start
 	one1 = zero1 + 1
 	two1 = zero1 + 2
-	three1 = zero1 + 2
+	three1 = zero1 + 3
 	## four1 is conqured in solution
 	four1 = zero1 + 4
 	five1 = zero1 + 5
 	middle1 = zero1 + 6
 
-	print("one1: " + str(one1))
-	print("four1: " + str(four1))
+	# print("one1: " + str(one1))
+	# print("four1: " + str(four1))
 
 	# weights
 	lst.append((zero1, zero1, 750))
@@ -53,7 +53,7 @@ def type1_creator(source, start):
 	five2 = zero2 + 5
 	middle2 = zero2 + 6
 
-	print("middle2: " + str(middle2))
+	# print("middle2: " + str(middle2))
 
 	# weights
 	lst.append((zero2, zero2, 750))
@@ -65,12 +65,12 @@ def type1_creator(source, start):
 	lst.append((middle2, middle2, 250))
 
 	# connect all to the middle one
-	lst.append((zero2, middle2, 500))
-	lst.append((zero2, middle2, 500))
-	lst.append((two2, middle2, 500))
-	lst.append((three2, middle2, 500))
-	lst.append((four2, middle2, 500))
-	lst.append((five2, middle2, 500))
+	lst.append((zero2, middle2, 350))
+	lst.append((one2, middle2, 350))
+	lst.append((two2, middle2, 350))
+	lst.append((three2, middle2, 350))
+	lst.append((four2, middle2, 350))
+	lst.append((five2, middle2, 350))
 
 	# connect the ones around the middle one
 	lst.append((zero2, one2, 20))
@@ -200,6 +200,8 @@ def main_bushy_2_micro(source, start):
 	lst.append((useless1, useless1, 10))
 	lst.append((useless2, useless2, 10))
 	lst.append((useless3, useless3, 10))
+	# print("four1bush: ", four1)
+	# print("four2bush: ", four2)
 
 	# connect them to both of the fours 
 	lst.append((useless1, four1, 50))
@@ -248,83 +250,84 @@ def micro_bushy(source, start):
 	# twelve is conquered
 	twelve = start + 11
 
-	lst.append((one, one, 100))
-	lst.append((two, two, 100))
-	lst.append((three, three, 100))
+	lst.append((one, one, 250))
+	lst.append((two, two, 250))
+	lst.append((three, three, 250))
 	lst.append((four, four, 20))
-	lst.append((five, five, 100))
-	lst.append((six, six, 30))
-	lst.append((seven, seven, 100))
-	lst.append((eight, eight, 100))
-	lst.append((nine, nine, 100))
-	lst.append((ten, ten, 100))
-	lst.append((eleven, eleven, 100))
-	lst.append((twelve, twelve, 50))
+	lst.append((five, five, 250))
+	lst.append((six, six, 20))
+	lst.append((seven, seven, 250))
+	lst.append((eight, eight, 250))
+	lst.append((nine, nine, 250))
+	lst.append((ten, ten, 250))
+	lst.append((eleven, eleven, 250))
+	lst.append((twelve, twelve, 20))
 
 	# connect to source
 	lst.append((source, two, 50))
 	# all edges are of price 5
-	lst.append((one, two, 5))
-	lst.append((one, five, 5))
-	lst.append((one, six, 5))
+	lst.append((one, two, 50))
+	lst.append((one, five, 50))
+	lst.append((one, six, 50))
 
-	lst.append((two, five, 5))
-	lst.append((two, six, 5))
-	lst.append((two, seven, 5))
-	lst.append((two, three, 5))
+	lst.append((two, five, 50))
+	lst.append((two, six, 50))
+	lst.append((two, seven, 50))
+	lst.append((two, three, 50))
 
-	lst.append((three, six, 5))
-	lst.append((three, seven, 5))
-	lst.append((three, eight, 5))
-	lst.append((three, four, 5))
+	lst.append((three, six, 50))
+	lst.append((three, seven, 50))
+	lst.append((three, eight, 50))
+	lst.append((three, four, 50))
 
-	lst.append((four, seven, 5))
-	lst.append((four, eight, 5))
+	lst.append((four, seven, 50))
+	lst.append((four, eight, 50))
 
-	lst.append((five, nine, 5))
-	lst.append((five, ten, 5))
-	lst.append((five, six, 5))
+	lst.append((five, nine, 50))
+	lst.append((five, ten, 50))
+	lst.append((five, six, 50))
 
-	lst.append((six, nine, 5))
-	lst.append((six, ten, 5))
-	lst.append((six, eleven, 5))
-	lst.append((six, seven, 5))
+	lst.append((six, nine, 50))
+	lst.append((six, ten, 50))
+	lst.append((six, eleven, 50))
+	lst.append((six, seven, 50))
 
-	lst.append((seven, ten, 5))
-	lst.append((seven, eleven, 5))
-	lst.append((seven, twelve, 5))
-	lst.append((seven, eight, 5))
+	lst.append((seven, ten, 50))
+	lst.append((seven, eleven, 50))
+	lst.append((seven, twelve, 50))
+	lst.append((seven, eight, 50))
 
-	lst.append((eight, eleven, 5))
-	lst.append((eight, twelve, 5))
+	lst.append((eight, eleven, 50))
+	lst.append((eight, twelve, 50))
 
-	lst.append((nine, ten, 5))
+	lst.append((nine, ten, 50))
 
-	lst.append((ten, eleven, 5))
+	lst.append((ten, eleven, 50))
 
-	lst.append((eleven, twelve, 5))
+	lst.append((eleven, twelve, 50))
 
 
 	return lst, twelve, four
 
 
 
-def create_50():
+
+def make_dem_50(start):
 	lst = []
 
 	#source cost
 	source = 0
 	lst.append((source,source, 800))
 
-	lst1, last1 = type1_creator(source,1)
+	lst1, last1 = type1_creator(source,start)
 
 	#Print for debug, should be 22
-	print(last1)
+	# print(last1)
 
 	lst2, last2 = main_bushy_2_micro(source, last1 + 1)
 
 	#Print for debug, should be 49 cause source is 0 and matrix is 50 by 50
-	print(last2)
+	# print(last2)
 
 
 
@@ -334,14 +337,25 @@ def create_50():
 
 	lst = lst + lst1 + lst2
 
-	for i in range(1,23):
+	# print(start+1)
+	# print(start+4)
+	# print(start+13)
+	# print(start + 25)
+	# print(start + 37)
+
+	for i in range(start,start + 22):
 		# not connecting these ones to make sure you wanna go back to source
-		if i == 2 or i == 5 or i == 14:
+		if i == (start + 1) or i == (start + 4) or i == (start + 13) or i == (start + 25) or i == (start + 37):
 			continue
-		for j in range(23, 50):
+		for j in range(start + 22, start + 49):
 			lst.append((i,j, 750))
 
 
 	return lst
+
+
+def create_50():
+	return make_dem_50(1)
+
 
 
