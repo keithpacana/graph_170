@@ -67,6 +67,9 @@ def create_200_input():
 	file.write("197\n")
 	file.write(string_of_nodes(197) + "\n")
 	file.write("0\n")
+	# path = [0, 1, 2, 1, 3, 97, 49, 57, 8, 50, 51, 50, 52, 99, 100, 99, 101, 195, 147, 155, 106, 148, 149, 148, 150, 148, 0]
+	# for i in range(len(path) - 1):
+	# 	print((path[i], path[i+1], arr[path[i]][path[i+1]]))
 	for row in arr:
 		r = ""
 		for element in row:
