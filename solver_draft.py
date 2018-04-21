@@ -6,6 +6,8 @@ import argparse
 import utils
 from student_utils_sp18 import *
 from dijkstra import single_source_dijkstra_path_length
+from min_dominating_set import min_weighted_dominating_set
+
 
 
 ###### Helper Functions ######
@@ -83,6 +85,7 @@ class Graph:
 		while level > 0:
 			curr_level = []
 
+	def get_dominating_set():
 
 
 GraphSolver("small_test.in")
