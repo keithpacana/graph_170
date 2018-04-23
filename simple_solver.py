@@ -169,7 +169,8 @@ def write_output(file_num, solution, list_of_kingdom_names, path_dict):
 ######################################## SOLVER ##################
 
 file_names = []
-for i in range(15, 716):
+#Hive running range(132,230)
+for i in range(132, 230):
     file_names.append(str(i) + ".in")
 
 
