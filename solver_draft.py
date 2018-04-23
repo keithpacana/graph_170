@@ -50,34 +50,45 @@ class GraphSolver:
 
 		self.unconq = set(range(self.number_of_kingdoms))
 
+		self.dominating_set = self.get_dominating_set()
+		print(self.dominating_set)
 
-		print(self.dijk)
-		print(self.c_n)
-		print(self.unconq)
-		print(self.G.get_neighbors(self.source_index))
+	def get_conquer_cost(self, node_index):
 
+		return self.adjacency_matrix[node_index][node_index]
 
-	def node_heuristic(curr, dest):
-		edge_cost = self.adjacency_matrix[curr][dest]
-		conquer_cost = self.adjacency_matrix[dest][dest]
+	def get_total_neighbor_cost(self, node_index):
+		total = 0
+		for neighbor in self.G.get_neighbors(node_index):
+			if neighbor == self.source_index:
+				continue
+			total += self.get_conquer_cost(neighbor)
 
+		return total 
 
+	def get_dom_weight(self):
+		lst = []
+		for i in range(self.number_of_kingdoms):
+			lst.append(self.get_conquer_cost(i))
+		return lst
 
+	def get_dominating_set(self):
+		return min_weighted_dominating_set(self.G.graph, self.get_dom_weight())
 
 
 
 ####### Graph Object Class ####
 class Graph:
 	def __init__(self, adjacency_matrix, number_of_kingdoms, source_index):
-		self.G = graph_creator(adjacency_matrix, number_of_kingdoms)
+		self.graph = graph_creator(adjacency_matrix, number_of_kingdoms)
 		self.source = source_index
 
 
 	def get_dijkstra(self):
-		return single_source_dijkstra_path_length(self.G, self.source)
+		return single_source_dijkstra_path_length(self.graph, self.source)
 
 	def get_neighbors(self, node):
-		return list(self.G.neighbors(node))
+		return self.graph.neighbors(node)
 
 	def get_neighbors_levels(self, node, level):
 		neighbors = set()
@@ -86,9 +97,9 @@ class Graph:
 			curr_level = []
 
 	def get_dominating_set():
+		return 0
 
-
-GraphSolver("small_test.in")
+solver = GraphSolver("small_test.in")
 
 
 

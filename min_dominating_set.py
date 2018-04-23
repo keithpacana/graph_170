@@ -36,7 +36,7 @@ def min_weighted_dominating_set(G, weight=None):
       Undirected graph
 
     weight : None or string, optional (default = None)
-        If None, every edge has weight/distance/weight 1. If a string, use this
+        If None, every edge has p/distance/weight 1. If a string, use this
         edge attribute as the edge weight. Any edge attribute not present
         defaults to 1.
 
@@ -59,9 +59,11 @@ def min_weighted_dominating_set(G, weight=None):
         raise ValueError("Expected non-empty NetworkX graph!")
 
     # min cover = min dominating set
+    weight = None
     dom_set = set([])
     cost_func = dict((node, nd.get(weight, 1)) \
-                     for node, nd in G.nodes_iter(data=True))
+                     for node, nd in G.nodes(data=True))
+    
 
     vertices = set(G)
     sets = dict((node, set([node]) | set(G[node])) for node in G)
@@ -75,9 +77,12 @@ def min_weighted_dominating_set(G, weight=None):
     while vertices:
         # find the most cost effective set, and the vertex that for that set
         dom_node, min_set = min(sets.items(),
-                                key=lambda x: (x[0], _cost(x[1])))
+                                key=lambda x: _cost(x[1]))
+        print("cost_func: ", cost_func)
+        print("dom_node: ", dom_node)
+        print("min_set: ", min_set)
         alpha = _cost(min_set)
-
+        print("alpha: ", alpha)
         # reduce the cost for the rest
         for node in min_set - dom_set:
             cost_func[node] = alpha
