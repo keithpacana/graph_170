@@ -192,7 +192,7 @@ for file_name in file_names:
 
     top10_dom = best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacency_matrix, temp)
     best_solution = None
-    print("top_10_dom: ", top10_dom)
+    # print("top_10_dom: ", top10_dom)
     for dom_cost, dom_set in top10_dom:
         cycle_tup = best_cycle(dist_dict, dom_set, source_index)
         cycle_cost = cycle_tup[0]
@@ -200,7 +200,7 @@ for file_name in file_names:
         if best_solution is None or best_solution[0] > (dom_cost + cycle_cost):
             best_solution = (dom_cost+cycle_cost, cycle_path, dom_set)
 
-    print(best_solution)
+    # print(best_solution)
     write_output(file_num, best_solution, list_of_kingdom_names, path_dict)
 
 
