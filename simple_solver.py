@@ -113,6 +113,8 @@ def best_cycle(dist_dict, dom_set, source_index):
         source_con = True
 
     best_cycle = None
+    if not dom_set:
+        return (0, [0])
     for i in range(500000):
         cycle = list(random_cycle(dom_set))
         cycle = [source_index] + cycle + [source_index]
@@ -128,7 +130,6 @@ def best_cycle(dist_dict, dom_set, source_index):
 
 
 def random_cycle(dom_set):
-
     return np.random.choice(list(dom_set), len(dom_set), replace=False)
 
 
@@ -168,12 +169,23 @@ def write_output(file_num, solution, list_of_kingdom_names, path_dict):
         file.write(" ")
     file.close()
 
+
 ######################################## SOLVER ##################
 
 file_names = []
 #Hive running range(132,230)
-for i in range(138,725):
+for i in range(138,726):
     file_names.append(str(i) + ".in")
+file_names.remove("249.in")
+file_names.remove("250.in")
+file_names.remove("310.in")
+file_names.remove("521.in")
+file_names.remove("696.in")
+file_names.remove("697.in")
+file_names.remove("698.in")
+file_names.remove("711.in")
+file_names.remove("712.in")
+file_names.remove("713.in")
 
 
 for file_name in file_names:
@@ -195,7 +207,6 @@ for file_name in file_names:
 
     top10_dom = best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacency_matrix, temp)
     best_solution = None
-    # print("top_10_dom: ", top10_dom)
     for dom_cost, dom_set in top10_dom:
         cycle_tup = best_cycle(dist_dict, dom_set, source_index)
         cycle_cost = cycle_tup[0]
