@@ -104,7 +104,8 @@ def best_cycle(dist_dict, dom_set, source_index):
 
     best_cycle = None
     if not dom_set:
-        return (0, [0])
+        dom_set.add(source_index)
+        return (0, [source_index])
     for i in range(1000000):
         cycle = list(random_cycle(dom_set))
         cycle = [source_index] + cycle + [source_index]
@@ -230,10 +231,10 @@ for file_name in file_names:
     temp = 1
     file_num = file_name.split(".")[0]
 
-    neighbor_dict = pickle.Unpickler(open( "./neighbors_dict/" + file_num + "_neighbors_dict.p", "rb" )).load()
+    neighbor_dict = pickle.Unpickler(open( "./dict_poly2/neighbors_dict/" + file_num + "_neighbors_dict.p", "rb" )).load()
 
-    dist_dict = pickle.Unpickler( open( "./shortest_dist_dict/" + file_num + "_dist_dict.p", "rb" ) ).load()
-    path_dict = pickle.Unpickler( open( "./shortest_path_dict/" + file_num + "_path_dict.p", "rb" ) ).load()
+    dist_dict = pickle.Unpickler( open( "./dict_poly2/shortest_dist_dict/" + file_num + "_dist_dict.p", "rb" ) ).load()
+    path_dict = pickle.Unpickler( open( "./dict_poly2/shortest_path_dict/" + file_num + "_path_dict.p", "rb" ) ).load()
     curr_best = output_cost(file_num, dist_dict, adjacency_matrix)
 
 
