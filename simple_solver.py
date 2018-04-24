@@ -38,6 +38,8 @@ def random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_
     #sur = set([source_index])
     sur = set()
     prob = softmax(node_prob, temp)
+    if (0 in prob):
+        prob = None
     order = np.random.choice(number_of_kingdoms, number_of_kingdoms, replace=False, p =prob)
     for i in order:
         con.add(i)
@@ -110,18 +112,18 @@ def best_cycle(dist_dict, dom_set, source_index):
         dom_set.remove(source_index)
         source_con = True
 
-    all_cycle = []
-    ep_check = set()
+    best_cycle = None
     for i in range(500000):
         cycle = list(random_cycle(dom_set))
         cycle = [source_index] + cycle + [source_index]
         val = cylce_val(dist_dict, cycle)
-        all_cycle.append((val, cycle))
+        if best_cycle is None or best_cycle[0] > val:
+            best_cycle = (val, cycle)
 
     if source_con:
         dom_set.add(source_index)
 
-    return min(all_cycle, key=lambda x: x[0])
+    return best_cycle
 
 
 
@@ -152,7 +154,7 @@ def get_path(cycle_order, path_dict):
 ################# write solutions ##################
 
 def write_output(file_num, solution, list_of_kingdom_names, path_dict):
-    file = open("./outputs/" + file_num + ".out", "w")
+    file = open("./" + file_num + ".out", "w")
     cycle_order = solution[1]
     conquer_set = solution[2]
     path = get_path(cycle_order, path_dict)
@@ -170,7 +172,7 @@ def write_output(file_num, solution, list_of_kingdom_names, path_dict):
 
 file_names = []
 #Hive running range(132,230)
-for i in range(132, 230):
+for i in range(132,133):
     file_names.append(str(i) + ".in")
 
 
