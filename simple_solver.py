@@ -172,7 +172,7 @@ def write_output(file_num, solution, list_of_kingdom_names, path_dict):
 
 file_names = []
 #Hive running range(132,230)
-for i in range(132,133):
+for i in range(132,716):
     file_names.append(str(i) + ".in")
 
 
