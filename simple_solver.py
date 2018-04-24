@@ -154,7 +154,7 @@ def get_path(cycle_order, path_dict):
 ################# write solutions ##################
 
 def write_output(file_num, solution, list_of_kingdom_names, path_dict):
-    file = open("./" + file_num + ".out", "w")
+    file = open("./outputs/" + file_num + ".out", "w")
     cycle_order = solution[1]
     conquer_set = solution[2]
     path = get_path(cycle_order, path_dict)
