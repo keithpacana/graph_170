@@ -106,7 +106,7 @@ def best_cycle(dist_dict, dom_set, source_index):
     if not dom_set:
         dom_set.add(source_index)
         return (0, [source_index])
-    for i in range(100000):
+    for i in range(1000000):
         cycle = list(random_cycle(dom_set))
         cycle = [source_index] + cycle + [source_index]
         val = cylce_val(dist_dict, cycle)
@@ -205,9 +205,7 @@ def solver(curr_file, beaten_file, iter_file, write_to, poly2, range_start, rang
                 cycle_tup = best_cycle(dist_dict, dom_set, source_index)
                 cycle_cost = cycle_tup[0]
                 cycle_path = cycle_tup[1]
-                val = dom_cost + cycle_cost
-                with open(curr_file, "a") as file_curr:
-                        file_curr.write(file_num + "\n")       
+                val = dom_cost + cycle_cost      
                 if curr_best > val:
                     with open(beaten_file, "a") as file:
                         file.write(file_num + "\n")
