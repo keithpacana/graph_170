@@ -106,7 +106,7 @@ def best_cycle(dist_dict, dom_set, source_index):
     if not dom_set:
         dom_set.add(source_index)
         return (0, [source_index])
-    for i in range(2000000):
+    for i in range(1000000):
         cycle = list(random_cycle(dom_set))
         cycle = [source_index] + cycle + [source_index]
         val = cylce_val(dist_dict, cycle)
@@ -162,10 +162,10 @@ def write_output(file_num, solution, list_of_kingdom_names, path_dict, write_to)
 
 
 ######################################## SOLVER ##################
-def solver(curr_file, beaten_file, iter_file, write_to, poly2, range_start, range_end):
+def solver(curr_file, iter_file, beaten_file, write_to, poly2, range_start, range_end):
     for j in range(10000):
-        with open(curr_file, "a") as file_curr:
-            file_curr.write(str(j) + "\n")  
+        with open(iter_file, "a") as file_iter:
+            file_iter.write(str(j) + "\n")  
 
         file_names = []
         for i in range(range_start, range_end):
@@ -205,20 +205,17 @@ def solver(curr_file, beaten_file, iter_file, write_to, poly2, range_start, rang
                 cycle_tup = best_cycle(dist_dict, dom_set, source_index)
                 cycle_cost = cycle_tup[0]
                 cycle_path = cycle_tup[1]
-                val = dom_cost + cycle_cost      
+                val = dom_cost + cycle_cost    
                 if curr_best > val:
-                    with open(beaten_file, "a") as file:
-                        file.write(file_num + "\n")
-                        file.write("curr_best: " + str(curr_best) + "\n")
-                        file.write("new_best: "+ str(val) + "\n" + "\n")
+                    with open(beaten_file, "a") as file_beat:
+                        file_beat.write(file_num + "\n")
+                        file_beat.write("curr_best: " + str(curr_best) + "\n")
+                        file_beat.write("new_best: "+ str(val) + "\n" + "\n")
+                        print("write")
                     best_solution = (dom_cost+cycle_cost, cycle_path, dom_set)
                     write_output(file_num, best_solution, list_of_kingdom_names, path_dict, write_to)
                     break;
             
-            with open(beaten_file, "a") as file:
-                file.write(file_num + " NOT_BEATEN" + "\n")
-                file.write("curr_best: " + str(curr_best) + "\n")
-                file.write("new_best: "+ str(val) + "\n" + "\n") 
 
 
 
