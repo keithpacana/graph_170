@@ -12,19 +12,24 @@ import pickle
 
 
 
-def graph_creator(adjacency_matrix, number_of_kingdoms):
-    edge_list = []
-    for i in range(number_of_kingdoms):
-        for j in range(i):
-            weight = adjacency_matrix[i][j]
-            if weight == "x":
-                continue
-            edge_list.append((i,j, weight))
-    G = nx.Graph()
-    nodelist = range(number_of_kingdoms)
-    G.add_weighted_edges_from(edge_list, nodelist=nodelist)
-    return G
 
+
+def cost(input_file, output_file, dist_dict, adjacency_matrix):
+    input_data = utils.read_file(input_file)
+    output_data = utils.read_file(output_file)
+    number_of_kingdoms, list_of_kingdom_names, starting_kingdom, adjacency_matrix = data_parser(input_data)
+
+    kingdom_tour = output_data[0]
+    conquered_kingdoms = output_data[1]
+
+    kingdom_tour = [list_of_kingdom_names.index(name) for name in kingdom_tour]
+    conquered_kingdoms = [list_of_kingdom_names.index(name) for name in conquered_kingdoms]
+
+    return cylce_val(dist_dict, kingdom_tour) + dominating_set_value(adjacency_matrix, conquered_kingdoms)
+
+def output_cost(file_num, dist_dict, adjacency_matrix):
+    input_file, output_file = "./inputs/" + file_num + ".in", "./outputs/" + file_num + ".out"
+    return cost(input_file, output_file, dist_dict, adjacency_matrix)
 
 
 ############### DOM SET #############################
@@ -58,20 +63,6 @@ def softmax(x, temp):
     return e_x / e_x.sum(axis=0) # only difference
 
 
-def is_dominating_set(G, nbunch):
-
-    testset = set(n for n in nbunch if n in G)
-    nbrs = set()
-    for n in testset:
-        nbrs.update(G[n])
-    if len(set(G) - testset - nbrs) > 0:
-        return False
-    else:
-        return True
-
-
-
-
 def dominating_set_value(adjacency_matrix, dom_set):
     val = 0
     for node in dom_set:
@@ -85,14 +76,14 @@ def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacen
     node_prob = get_dom_prob(neighbor_dict, adjacency_matrix, number_of_kingdoms)
     all_dom = []
     rep_check = set()
-    for i in range(10000):
+    for i in range(1000):
         dom_set = random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_prob, temp)
         val = dominating_set_value(adjacency_matrix, dom_set)
         if val not in rep_check:
             rep_check.add(val)
             heappush(all_dom, (val, dom_set))
     top10 = []
-    for i in range(10):
+    for i in range(15):
         if len(all_dom) == 0:
             break
         top10.append(heappop(all_dom))
@@ -102,7 +93,6 @@ def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacen
 
 
 ######################################### Cycle ##############
-
 
 
 def best_cycle(dist_dict, dom_set, source_index):
@@ -116,7 +106,7 @@ def best_cycle(dist_dict, dom_set, source_index):
     if not dom_set:
         dom_set.add(source_index)
         return (0, [source_index])
-    for i in range(500000):
+    for i in range(10000):
         cycle = list(random_cycle(dom_set))
         cycle = [source_index] + cycle + [source_index]
         val = cylce_val(dist_dict, cycle)
@@ -133,6 +123,48 @@ def best_cycle(dist_dict, dom_set, source_index):
 def random_cycle(dom_set):
     return np.random.choice(list(dom_set), len(dom_set), replace=False)
 
+# def best_cycle(dist_dict, dom_set, source_index):
+
+#     source_con = False
+#     if source_index in dom_set:
+#         dom_set.remove(source_index)
+#         source_con = True
+
+#     best_cycle = None
+#     if not dom_set:
+#         return (0, [0])
+#     for i in range(100000):
+#         if (i % 10000 == 0):
+#             print("Processing: ", i)
+#         cycle = get_cycle(dom_set, dist_dict, source_index)
+#         cycle = [source_index] + cycle + [source_index]
+#         val = cylce_val(dist_dict, cycle)
+#         if best_cycle is None or best_cycle[0] > val:
+#             best_cycle = (val, cycle)
+
+#     if source_con:
+#         dom_set.add(source_index)
+
+#     return best_cycle
+
+
+
+# def get_cycle(dom_set, dist_dict, source_index):
+#     node_list = list(dom_set)
+#     next_node = source_index
+#     cycle = []
+#     while node_list:
+#         prob = next_prob(node_list, dist_dict, next_node)
+#         next_node = np.random.choice(node_list, 1, p=prob)[0]
+#         node_list.remove(next_node)
+#         cycle.append(next_node)
+
+#     return cycle 
+
+
+# def next_prob(node_list, dist_dict, curr_node):
+#     val_lst = [1/dist_dict[nd][curr_node] for nd in node_list]
+#     return softmax(val_lst, 1)
 
 def cylce_val(dist_dict, cycle):
     total_cost = 0
@@ -156,7 +188,7 @@ def get_path(cycle_order, path_dict):
 ################# write solutions ##################
 
 def write_output(file_num, solution, list_of_kingdom_names, path_dict):
-    file = open("./outputs/" + file_num + ".out", "w")
+    file = open("./outputs_quickie/" + file_num + ".out", "w")
     cycle_order = solution[1]
     conquer_set = solution[2]
     path = get_path(cycle_order, path_dict)
@@ -174,16 +206,11 @@ def write_output(file_num, solution, list_of_kingdom_names, path_dict):
 ######################################## SOLVER ##################
 
 file_names = []
-#Hive running range(132,230)
-# file_names = []
-# for i in range(0,726):
+# for i in range(645,726):
 #     file_names.append(str(i) + ".in")
 # file_names.remove("102.in")
 # file_names.remove("103.in")
 # file_names.remove("104.in")
-# file_names.remove("210.in")
-# file_names.remove("211.in")
-# file_names.remove("212.in")
 # file_names.remove("375.in")
 # file_names.remove("376.in")
 # file_names.remove("377.in")
@@ -200,9 +227,17 @@ file_names = []
 # file_names.remove("711.in")
 # file_names.remove("712.in")
 # file_names.remove("713.in")
-for i in range(743,745):
+for i in range(742, 743):
     file_names.append(str(i) + ".in")
-
+# file_names.remove("696.in")
+# file_names.remove("697.in")
+# file_names.remove("698.in")
+# file_names.remove("711.in")
+# file_names.remove("712.in")
+# file_names.remove("713.in")
+# file_names.remove("705.in")
+# file_names.remove("706.in")
+# file_names.remove("707.in")
 
 for file_name in file_names:
     print("#########################")
@@ -215,25 +250,31 @@ for file_name in file_names:
     temp = 1
     file_num = file_name.split(".")[0]
 
-    neighbor_dict = pickle.load( open( "./neighbors_dict/" + file_num + "_neighbors_dict.p", "rb" ) )
-    # neighbor_cost = pickle.load( open( "./neighbors_cost/" + file_num + "_neighbors_cost.p", "rb" ) )
-    dist_dict = pickle.load( open( "./shortest_dist_dict/" + file_num + "_dist_dict.p", "rb" ) )
-    path_dict = pickle.load( open( "./shortest_path_dict/" + file_num + "_path_dict.p", "rb" ) )
+    neighbor_dict = pickle.Unpickler(open( "./dict_poly2/neighbors_dict/" + file_num + "_neighbors_dict.p", "rb" )).load()
+
+    dist_dict = pickle.Unpickler( open( "./dict_poly2/shortest_dist_dict/" + file_num + "_dist_dict.p", "rb" ) ).load()
+    path_dict = pickle.Unpickler( open( "./dict_poly2/shortest_path_dict/" + file_num + "_path_dict.p", "rb" ) ).load()
+    curr_best = output_cost(file_num, dist_dict, adjacency_matrix)
 
 
     top10_dom = best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacency_matrix, temp)
-    best_solution = None
     for dom_cost, dom_set in top10_dom:
+        if dom_cost >= curr_best:
+            continue
         cycle_tup = best_cycle(dist_dict, dom_set, source_index)
         cycle_cost = cycle_tup[0]
         cycle_path = cycle_tup[1]
-        if best_solution is None or best_solution[0] > (dom_cost + cycle_cost):
+        val = dom_cost + cycle_cost
+        with open("./curr_quickie.txt", "w") as file_curr:
+                file_curr.write(file_num + "\n")       
+        if curr_best > val:
+            with open("./beaten_quickie.txt", "a") as file:
+                file.write(file_num + "\n")
+                file.write("curr_best: " + str(curr_best) + "\n")
+                file.write("new_best: "+ str(val) + "\n" + "\n")
             best_solution = (dom_cost+cycle_cost, cycle_path, dom_set)
-
-    # print(best_solution)
-    write_output(file_num, best_solution, list_of_kingdom_names, path_dict)
-
-
+            write_output(file_num, best_solution, list_of_kingdom_names, path_dict)
+            break;
 
 
 
