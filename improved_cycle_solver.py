@@ -76,7 +76,7 @@ def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacen
     node_prob = get_dom_prob(neighbor_dict, adjacency_matrix, number_of_kingdoms)
     all_dom = []
     rep_check = set()
-    for i in range(1000):
+    for i in range(10000):
         dom_set = random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_prob, temp)
         val = dominating_set_value(adjacency_matrix, dom_set)
         if val not in rep_check:
@@ -106,7 +106,7 @@ def best_cycle(dist_dict, dom_set, source_index):
     if not dom_set:
         dom_set.add(source_index)
         return (0, [source_index])
-    for i in range(1000):
+    for i in range(100000):
         cycle = list(random_cycle(dom_set))
         cycle = [source_index] + cycle + [source_index]
         val = cylce_val(dist_dict, cycle)
@@ -163,7 +163,7 @@ def write_output(file_num, solution, list_of_kingdom_names, path_dict, write_to)
 
 ######################################## SOLVER ##################
 def solver(curr_file, beaten_file, iter_file, write_to, poly2, range_start, range_end):
-    for j in range(1000):
+    for j in range(10000):
         with open(curr_file, "a") as file_curr:
             file_curr.write(str(j) + "\n")  
 
@@ -175,6 +175,8 @@ def solver(curr_file, beaten_file, iter_file, write_to, poly2, range_start, rang
                 continue
             file_names.append(str(i) + ".in")
 
+        with open(curr_file, "a") as file_curr:
+            file_curr.write(file_num + "\n")  
 
         for file_name in file_names:
             print("#########################")
@@ -196,8 +198,6 @@ def solver(curr_file, beaten_file, iter_file, write_to, poly2, range_start, rang
             dist_dict = pickle.Unpickler( open( poly_path + "shortest_dist_dict/" + file_num + "_dist_dict.p", "rb" ) ).load()
             path_dict = pickle.Unpickler( open( poly_path + "shortest_path_dict/" + file_num + "_path_dict.p", "rb" ) ).load()
             curr_best = output_cost(file_num, dist_dict, adjacency_matrix)
-            with open(curr_file, "a") as file_curr:
-                file_curr.write(file_num + "\n")  
 
             top10_dom = best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacency_matrix, temp)
             for dom_cost, dom_set in top10_dom:
