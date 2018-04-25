@@ -76,7 +76,7 @@ def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacen
     node_prob = get_dom_prob(neighbor_dict, adjacency_matrix, number_of_kingdoms)
     all_dom = []
     rep_check = set()
-    for i in range(15000):
+    for i in range(1000):
         dom_set = random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_prob, temp)
         val = dominating_set_value(adjacency_matrix, dom_set)
         if val not in rep_check:
@@ -106,7 +106,7 @@ def best_cycle(dist_dict, dom_set, source_index):
     if not dom_set:
         dom_set.add(source_index)
         return (0, [source_index])
-    for i in range(1000000):
+    for i in range(1000):
         cycle = list(random_cycle(dom_set))
         cycle = [source_index] + cycle + [source_index]
         val = cylce_val(dist_dict, cycle)
@@ -123,48 +123,6 @@ def best_cycle(dist_dict, dom_set, source_index):
 def random_cycle(dom_set):
     return np.random.choice(list(dom_set), len(dom_set), replace=False)
 
-# def best_cycle(dist_dict, dom_set, source_index):
-
-#     source_con = False
-#     if source_index in dom_set:
-#         dom_set.remove(source_index)
-#         source_con = True
-
-#     best_cycle = None
-#     if not dom_set:
-#         return (0, [0])
-#     for i in range(100000):
-#         if (i % 10000 == 0):
-#             print("Processing: ", i)
-#         cycle = get_cycle(dom_set, dist_dict, source_index)
-#         cycle = [source_index] + cycle + [source_index]
-#         val = cylce_val(dist_dict, cycle)
-#         if best_cycle is None or best_cycle[0] > val:
-#             best_cycle = (val, cycle)
-
-#     if source_con:
-#         dom_set.add(source_index)
-
-#     return best_cycle
-
-
-
-# def get_cycle(dom_set, dist_dict, source_index):
-#     node_list = list(dom_set)
-#     next_node = source_index
-#     cycle = []
-#     while node_list:
-#         prob = next_prob(node_list, dist_dict, next_node)
-#         next_node = np.random.choice(node_list, 1, p=prob)[0]
-#         node_list.remove(next_node)
-#         cycle.append(next_node)
-
-#     return cycle 
-
-
-# def next_prob(node_list, dist_dict, curr_node):
-#     val_lst = [1/dist_dict[nd][curr_node] for nd in node_list]
-#     return softmax(val_lst, 1)
 
 def cylce_val(dist_dict, cycle):
     total_cost = 0
@@ -187,8 +145,8 @@ def get_path(cycle_order, path_dict):
 
 ################# write solutions ##################
 
-def write_output(file_num, solution, list_of_kingdom_names, path_dict):
-    file = open("./outputs2/" + file_num + ".out", "w")
+def write_output(file_num, solution, list_of_kingdom_names, path_dict, write_to):
+    file = open(write_to + file_num + ".out", "w")
     cycle_order = solution[1]
     conquer_set = solution[2]
     path = get_path(cycle_order, path_dict)
@@ -204,69 +162,56 @@ def write_output(file_num, solution, list_of_kingdom_names, path_dict):
 
 
 ######################################## SOLVER ##################
-
-file_names = []
-for i in range(0,726):
-    file_names.append(str(i) + ".in")
-file_names.remove("102.in")
-file_names.remove("103.in")
-file_names.remove("104.in")
-file_names.remove("375.in")
-file_names.remove("376.in")
-file_names.remove("377.in")
-file_names.remove("705.in")
-file_names.remove("706.in")
-file_names.remove("707.in")
-file_names.remove("249.in")
-file_names.remove("250.in")
-file_names.remove("310.in")
-file_names.remove("521.in")
-file_names.remove("696.in")
-file_names.remove("697.in")
-file_names.remove("698.in")
-file_names.remove("711.in")
-file_names.remove("712.in")
-file_names.remove("713.in")
-for i in range(726,753):
-    file_names.append(str(i) + ".in")
-
-
-for file_name in file_names:
-    print("#########################")
-    print(file_name)
-    print("#########################")
-    input_data = utils.read_file("./inputs/" + file_name)
-    number_of_kingdoms, list_of_kingdom_names, starting_kingdom, adjacency_matrix = data_parser(input_data)
-    source_index = list_of_kingdom_names.index(starting_kingdom)
-
-    temp = 1
-    file_num = file_name.split(".")[0]
-
-    neighbor_dict = pickle.Unpickler(open( "./dict_poly2/neighbors_dict/" + file_num + "_neighbors_dict.p", "rb" )).load()
-
-    dist_dict = pickle.Unpickler( open( "./dict_poly2/shortest_dist_dict/" + file_num + "_dist_dict.p", "rb" ) ).load()
-    path_dict = pickle.Unpickler( open( "./dict_poly2/shortest_path_dict/" + file_num + "_path_dict.p", "rb" ) ).load()
-    curr_best = output_cost(file_num, dist_dict, adjacency_matrix)
-
-
-    top10_dom = best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacency_matrix, temp)
-    for dom_cost, dom_set in top10_dom:
-        if dom_cost >= curr_best:
+def solver(curr_file, beaten_file, write_to, poly2, range_start, range_end):
+    file_names = []
+    for i in range(range_start, range_end):
+        if i in [102, 103, 104, 210, 211, 212, 375, 376, 377, 705, 706, 707, 249, 250, 310, 521, 696, 697, 698, 711, 712, 713]:
             continue
-        cycle_tup = best_cycle(dist_dict, dom_set, source_index)
-        cycle_cost = cycle_tup[0]
-        cycle_path = cycle_tup[1]
-        val = dom_cost + cycle_cost
-        with open("./curr.txt", "w") as file_curr:
-                file_curr.write(file_num + "\n")       
-        if curr_best > val:
-            with open("./beaten.txt", "a") as file:
-                file.write(file_num + "\n")
-                file.write("curr_best: " + str(curr_best) + "\n")
-                file.write("new_best: "+ str(val) + "\n" + "\n")
-            best_solution = (dom_cost+cycle_cost, cycle_path, dom_set)
-            write_output(file_num, best_solution, list_of_kingdom_names, path_dict)
-            break;
+        if i in [195, 207, 208, 209, 336, 337, 338, 528, 529, 594, 596, 642, 643, 644]:
+            continue
+        file_names.append(str(i) + ".in")
+
+
+    for file_name in file_names:
+        print("#########################")
+        print(file_name)
+        print("#########################")
+        input_data = utils.read_file("./inputs/" + file_name)
+        number_of_kingdoms, list_of_kingdom_names, starting_kingdom, adjacency_matrix = data_parser(input_data)
+        source_index = list_of_kingdom_names.index(starting_kingdom)
+
+        temp = 1
+        file_num = file_name.split(".")[0]
+
+        poly_path = "./"
+        if poly2:
+            poly_path = "./dict_poly2/"
+
+        neighbor_dict = pickle.Unpickler(open( poly_path + "neighbors_dict/" + file_num + "_neighbors_dict.p", "rb" )).load()
+
+        dist_dict = pickle.Unpickler( open( poly_path + "shortest_dist_dict/" + file_num + "_dist_dict.p", "rb" ) ).load()
+        path_dict = pickle.Unpickler( open( poly_path + "shortest_path_dict/" + file_num + "_path_dict.p", "rb" ) ).load()
+        curr_best = output_cost(file_num, dist_dict, adjacency_matrix)
+
+
+        top10_dom = best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacency_matrix, temp)
+        for dom_cost, dom_set in top10_dom:
+            if dom_cost >= curr_best:
+                continue
+            cycle_tup = best_cycle(dist_dict, dom_set, source_index)
+            cycle_cost = cycle_tup[0]
+            cycle_path = cycle_tup[1]
+            val = dom_cost + cycle_cost
+            with open(curr_file, "a") as file_curr:
+                    file_curr.write(file_num + "\n")       
+            if curr_best > val:
+                with open(beaten_file, "a") as file:
+                    file.write(file_num + "\n")
+                    file.write("curr_best: " + str(curr_best) + "\n")
+                    file.write("new_best: "+ str(val) + "\n" + "\n")
+                best_solution = (dom_cost+cycle_cost, cycle_path, dom_set)
+                write_output(file_num, best_solution, list_of_kingdom_names, path_dict, write_to)
+                break;
 
 
 
