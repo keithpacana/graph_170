@@ -1,4 +1,4 @@
 from improved_cycle_solver import solver
 
 
-solver("./curr_hive1.txt", "./iter_hive1.txt", "./beaten_hive1.txt", "./outputs", False, 0, 200)
+solver("./curr_hive1.txt", "./iter_hive1.txt", "./beaten_hive1.txt", "./outputs", False, 0, 100)

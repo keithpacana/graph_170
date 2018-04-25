@@ -76,7 +76,7 @@ def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacen
     node_prob = get_dom_prob(neighbor_dict, adjacency_matrix, number_of_kingdoms)
     all_dom = []
     rep_check = set()
-    for i in range(10000):
+    for i in range(20000):
         dom_set = random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_prob, temp)
         val = dominating_set_value(adjacency_matrix, dom_set)
         if val not in rep_check:
@@ -106,7 +106,7 @@ def best_cycle(dist_dict, dom_set, source_index):
     if not dom_set:
         dom_set.add(source_index)
         return (0, [source_index])
-    for i in range(1000000):
+    for i in range(2000000):
         cycle = list(random_cycle(dom_set))
         cycle = [source_index] + cycle + [source_index]
         val = cylce_val(dist_dict, cycle)
@@ -214,6 +214,12 @@ def solver(curr_file, beaten_file, iter_file, write_to, poly2, range_start, rang
                     best_solution = (dom_cost+cycle_cost, cycle_path, dom_set)
                     write_output(file_num, best_solution, list_of_kingdom_names, path_dict, write_to)
                     break;
+            
+            with open(beaten_file, "a") as file:
+                file.write(file_num + " NOT_BEATEN" + "\n")
+                file.write("curr_best: " + str(curr_best) + "\n")
+                file.write("new_best: "+ str(val) + "\n" + "\n") 
+
 
 
 
