@@ -106,7 +106,7 @@ def best_cycle(dist_dict, dom_set, source_index):
     if not dom_set:
         dom_set.add(source_index)
         return (0, [source_index])
-    for i in range(1000000):
+    for i in range(3000000):
         cycle = list(random_cycle(dom_set))
         cycle = [source_index] + cycle + [source_index]
         val = cylce_val(dist_dict, cycle)
