@@ -165,7 +165,7 @@ def write_output(file_num, solution, list_of_kingdom_names, path_dict, write_to)
 def solver(curr_file, beaten_file, iter_file, write_to, poly2, range_start, range_end):
     for j in range(1000):
         with open(curr_file, "a") as file_curr:
-            file_curr.write(file_num + "\n")  
+            file_curr.write(str(j) + "\n")  
 
         file_names = []
         for i in range(range_start, range_end):
