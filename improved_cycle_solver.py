@@ -208,6 +208,15 @@ def write_output(file_num, solution, list_of_kingdom_names, path_dict):
 file_names = []
 for i in range(0,726):
     file_names.append(str(i) + ".in")
+file_names.remove("102.in")
+file_names.remove("103.in")
+file_names.remove("104.in")
+file_names.remove("375.in")
+file_names.remove("376.in")
+file_names.remove("377.in")
+file_names.remove("705.in")
+file_names.remove("706.in")
+file_names.remove("707.in")
 file_names.remove("249.in")
 file_names.remove("250.in")
 file_names.remove("310.in")
@@ -218,6 +227,8 @@ file_names.remove("698.in")
 file_names.remove("711.in")
 file_names.remove("712.in")
 file_names.remove("713.in")
+for i in range(726,753):
+    file_names.append(str(i) + ".in")
 
 
 for file_name in file_names:
