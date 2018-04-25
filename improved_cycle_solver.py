@@ -175,9 +175,6 @@ def solver(curr_file, beaten_file, iter_file, write_to, poly2, range_start, rang
                 continue
             file_names.append(str(i) + ".in")
 
-        with open(curr_file, "a") as file_curr:
-            file_curr.write(file_num + "\n")  
-
         for file_name in file_names:
             print("#########################")
             print(file_name)
@@ -188,6 +185,8 @@ def solver(curr_file, beaten_file, iter_file, write_to, poly2, range_start, rang
 
             temp = 1
             file_num = file_name.split(".")[0]
+            with open(curr_file, "a") as file_curr:
+                file_curr.write(file_num + "\n")  
 
             poly_path = "./"
             if poly2:
