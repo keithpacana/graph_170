@@ -183,6 +183,8 @@ def solver(curr_file, iter_file, beaten_file, write_to, poly2, range_start, rang
             number_of_kingdoms, list_of_kingdom_names, starting_kingdom, adjacency_matrix = data_parser(input_data)
             source_index = list_of_kingdom_names.index(starting_kingdom)
 
+            if number_of_kingdoms < 100:
+                continue
             temp = 1
             file_num = file_name.split(".")[0]
             with open(curr_file, "a") as file_curr:

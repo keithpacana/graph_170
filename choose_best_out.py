@@ -9,9 +9,9 @@ MAX_VAL = sys.maxsize
 
 
 out_dir_0 = "./outputs/"
-out_dir_1 = "./outputs2/"
-out_dir_2 = "./outputs_quickie/"
-out_dir_3 = "./from_aws/outputs2/"
+out_dir_1 = "./new_out/outputs/"
+out_dir_2 = "./new_out_aws/outputs"
+out_dir_3 = "./outputs_tsp/"
 out_dirs = [out_dir_0, out_dir_1, out_dir_2, out_dir_3]
 file_nums = []
 input_dir = "./inputs/"

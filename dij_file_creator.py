@@ -36,10 +36,14 @@ def graph_creator(adjacency_matrix, number_of_kingdoms):
 
 input_file_path = "./inputs"
 
-all_input_files = [f for f in listdir(input_file_path) if isfile(join(input_file_path, f))]
+# all_input_files = [f for f in listdir(input_file_path) if isfile(join(input_file_path, f))]
 
 path_dict_name = "path_dict.p"
 dist_dict_name = "dist_dict.p"
+
+all_input_files = []
+for i in range(726,753):
+    all_input_files.append(str(i) + ".in")
 
 for file_name in all_input_files:
 	file_num = file_name.split(".")[0]
@@ -50,11 +54,11 @@ for file_name in all_input_files:
 	path_dict = all_pairs_dijkstra_path(G)
 	dist_dict = all_pairs_dijkstra_path_length(G)
 
-	path_file_name = "./shortest_path_dict/" + file_num + "_" + path_dict_name
-	dist_file_name = "./shortest_dist_dict/" + file_num + "_" + dist_dict_name
+	path_file_name = "./dict_poly2/shortest_path_dict/" + file_num + "_" + path_dict_name
+	dist_file_name = "./dict_poly2/shortest_dist_dict/" + file_num + "_" + dist_dict_name
 
-	pickle.dump( path_dict, open( path_file_name, "wb" ) )
-	pickle.dump( dist_dict, open( dist_file_name, "wb" ) )
+	pickle.dump( path_dict, open( path_file_name, "wb" ), protocol = 2 )
+	pickle.dump( dist_dict, open( dist_file_name, "wb" ), protocol = 2 )
 	print(file_num, " done")
 
 
