@@ -1,4 +1,4 @@
-from improved_cycle_solver import solver
+from tsp_solver import solver
 
 
-solver("./curr_hive6.txt", "./iter_hive6.txt", "./beaten_hive6.txt", "./outputs/", False, 512, 600)
+solver("./curr_hive6.txt", "./iter_hive6.txt", "./beaten_hive6.txt", "./outputs/", False, 500, 600)
