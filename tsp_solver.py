@@ -208,4 +208,5 @@ def solver(curr_file, iter_file, beaten_file, write_to, poly2, range_start, rang
                         print("write")
                     best_solution = (dom_cost+cycle_cost, cycle_path, dom_set)
                     write_output(file_num, best_solution, list_of_kingdom_names, path_dict, write_to)
+                    break
             
