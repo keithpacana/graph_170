@@ -81,7 +81,7 @@ def cost_of_solution(G, closed_walk, conquered_set):
         travelling_cost = sum([G.edges[e]['weight'] for e in closed_walk_edges])
         cost = conquering_cost + travelling_cost
         message += 'The conquering cost of your solution is {conquering_cost}\n'
-        message += s'The travelling cost of your solution is {travelling_cost}\n'
+        message += 'The travelling cost of your solution is {travelling_cost}\n'
         
     message += 'The total cost of your solution is {cost}'
     return cost, message
