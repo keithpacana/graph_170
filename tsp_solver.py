@@ -37,22 +37,22 @@ def output_cost(file_num, dist_dict, adjacency_matrix):
 
 
 
-def random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_prob, temp):
-
-    all_nodes = set(range(number_of_kingdoms))
+# def random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_prob, temp):
+def random_dominating_set(neighbor_dict, source_index, number_of_kingdoms):
+    random.seed(random.random())
+    available = set(range(number_of_kingdoms))
     con = set()
     #sur = set([source_index])
     sur = set()
-    prob = softmax(node_prob, temp)
-    if (0 in prob):
-        prob = None
-    order = np.random.choice(number_of_kingdoms, number_of_kingdoms, replace=False, p =prob)
-    for i in order:
-        con.add(i)
-        sur.add(i)
+    # prob = softmax(node_prob, temp)
+    # if (0 in prob):
+    #     prob = None
+    while len(sur) < number_of_kingdoms:
+        chosen = all_nodes(random.randint(len(available)))
+        con.add(chosen)
+        sur.add(chosen)
         sur.update(neighbor_dict[i])
-        if len(sur) == len(all_nodes):
-            return con
+        available = available - sur
     return con
 
 def get_dom_prob(neighbor_dict, adjacency_matrix, number_of_kingdoms):
@@ -74,11 +74,11 @@ def dominating_set_value(adjacency_matrix, dom_set):
 
 
 def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacency_matrix, temp):
-    node_prob = get_dom_prob(neighbor_dict, adjacency_matrix, number_of_kingdoms)
+    # node_prob = get_dom_prob(neighbor_dict, adjacency_matrix, number_of_kingdoms)
     all_dom = []
     rep_check = set()
     for i in range(15000):
-        dom_set = random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_prob, temp)
+        dom_set = random_dominating_set(neighbor_dict, source_index, number_of_kingdoms)
         val = dominating_set_value(adjacency_matrix, dom_set)
         if val not in rep_check:
             rep_check.add(val)
