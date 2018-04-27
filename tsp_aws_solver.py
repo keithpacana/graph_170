@@ -39,18 +39,21 @@ def output_cost(file_num, dist_dict, adjacency_matrix):
 
 def random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_prob, temp):
 
-    all_nodes = set(range(number_of_kingdoms))
+    available = set(range(number_of_kingdoms))
     con = set()
     sur = set()
     prob = softmax(node_prob, temp)
     if (0 in prob):
         prob = None
     order = np.random.choice(number_of_kingdoms, number_of_kingdoms, replace=False, p =prob)
-    for i in order:
-        con.add(i)
-        sur.add(i)
-        sur.update(neighbor_dict[i])
-        if len(sur) == len(all_nodes):
+    for chosen in order:
+        if chosen not in available:
+            continue
+        con.add(chosen)
+        sur.add(chosen)
+        sur.update(neighbor_dict[chosen])
+        available = available - sur
+        if len(sur) >= number_of_kingdoms:
             return con
     return con
 
@@ -77,7 +80,7 @@ def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacen
 
     all_dom = []
     rep_check = set()
-    for i in range(15000):
+    for i in range(30000):
         dom_set = random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_prob, temp)
         val = dominating_set_value(adjacency_matrix, dom_set)
         if val not in rep_check:
@@ -177,7 +180,7 @@ def solver(curr_file, iter_file, beaten_file, write_to, poly2, range_start, rang
             number_of_kingdoms, list_of_kingdom_names, starting_kingdom, adjacency_matrix = data_parser(input_data)
             source_index = list_of_kingdom_names.index(starting_kingdom)
 
-            temp = 20
+            temp = 1
             file_num = file_name.split(".")[0]
             with open(curr_file, "a") as file_curr:
                 file_curr.write(file_num + "\n")  
