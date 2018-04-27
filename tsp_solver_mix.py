@@ -87,7 +87,7 @@ def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacen
             rep_check.add(val)
             heappush(all_dom, (val, dom_set))
     top10 = []
-    for i in range(4):
+    for i in range(6):
         if len(all_dom) == 0:
             break
         top10.append(heappop(all_dom))

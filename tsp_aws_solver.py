@@ -80,14 +80,14 @@ def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacen
 
     all_dom = []
     rep_check = set()
-    for i in range(30000):
+    for i in range(60000):
         dom_set = random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_prob, temp)
         val = dominating_set_value(adjacency_matrix, dom_set)
         if val not in rep_check:
             rep_check.add(val)
             heappush(all_dom, (val, dom_set))
     top10 = []
-    for i in range(4):
+    for i in range(6):
         if len(all_dom) == 0:
             break
         top10.append(heappop(all_dom))
@@ -180,7 +180,7 @@ def solver(curr_file, iter_file, beaten_file, write_to, poly2, range_start, rang
             number_of_kingdoms, list_of_kingdom_names, starting_kingdom, adjacency_matrix = data_parser(input_data)
             source_index = list_of_kingdom_names.index(starting_kingdom)
 
-            temp = 1
+            temp = 10
             file_num = file_name.split(".")[0]
             with open(curr_file, "a") as file_curr:
                 file_curr.write(file_num + "\n")  
