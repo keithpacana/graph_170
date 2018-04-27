@@ -42,16 +42,15 @@ def random_dominating_set(neighbor_dict, source_index, number_of_kingdoms):
     random.seed(random.random())
     available = set(range(number_of_kingdoms))
     con = set()
-    #sur = set([source_index])
     sur = set()
     # prob = softmax(node_prob, temp)
     # if (0 in prob):
     #     prob = None
     while len(sur) < number_of_kingdoms:
-        chosen = all_nodes(random.randint(len(available)))
+        chosen = list(available)[random.randint(0,len(available) - 1)]
         con.add(chosen)
         sur.add(chosen)
-        sur.update(neighbor_dict[i])
+        sur.update(neighbor_dict[chosen])
         available = available - sur
     return con
 
@@ -209,5 +208,4 @@ def solver(curr_file, iter_file, beaten_file, write_to, poly2, range_start, rang
                         print("write")
                     best_solution = (dom_cost+cycle_cost, cycle_path, dom_set)
                     write_output(file_num, best_solution, list_of_kingdom_names, path_dict, write_to)
-                    break;
             
