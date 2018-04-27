@@ -84,7 +84,7 @@ def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacen
             rep_check.add(val)
             heappush(all_dom, (val, dom_set))
     top10 = []
-    for i in range(15):
+    for i in range(6):
         if len(all_dom) == 0:
             break
         top10.append(heappop(all_dom))
@@ -104,7 +104,7 @@ def best_cycle(dist_dict, dom_set, source_index):
         has_source = False
 
     best_cycle = None
-    for i in range(5):
+    for i in range(3):
         cycle = solve_for_cycle(dom_set, dist_dict, source_index)
         val = cylce_val(dist_dict, cycle)
         print("VAL", i, ":", val)
@@ -195,7 +195,8 @@ def solver(curr_file, iter_file, beaten_file, write_to, poly2, range_start, rang
             top10_dom = best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacency_matrix, temp)
             for dom_cost, dom_set in top10_dom:
                 if dom_cost >= curr_best or len(dom_set) < 8:
-                  continue
+                    print("Skipping: ", len(dom_set))
+                    continue
                 cycle_tup = best_cycle(dist_dict, dom_set, source_index)
                 cycle_cost = cycle_tup[0]
                 cycle_path = cycle_tup[1]
