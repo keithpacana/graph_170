@@ -3,7 +3,7 @@
 """ Traveling salesman problem solved using Simulated Annealing.
 """
 from scipy import *
-from pylab import *
+# from pylab import *
 
 def Distance(dist_dict, i, j):
     return dist_dict[i][j]
