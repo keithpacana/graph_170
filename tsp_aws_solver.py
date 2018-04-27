@@ -46,7 +46,6 @@ def random_dominating_set(neighbor_dict, source_index, number_of_kingdoms, node_
     if (0 in prob):
         prob = None
     order = np.random.choice(number_of_kingdoms, number_of_kingdoms, replace=False, p =prob)
-    print(order)
     for chosen in order:
         if chosen not in available:
             continue
