@@ -76,7 +76,7 @@ def best_dominating_set(neighbor_dict, source_index, number_of_kingdoms, adjacen
     # node_prob = get_dom_prob(neighbor_dict, adjacency_matrix, number_of_kingdoms)
     all_dom = []
     rep_check = set()
-    for i in range(15000):
+    for i in range(30000):
         dom_set = random_dominating_set(neighbor_dict, source_index, number_of_kingdoms)
         val = dominating_set_value(adjacency_matrix, dom_set)
         if val not in rep_check:
